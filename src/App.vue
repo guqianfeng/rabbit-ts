@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import request from './utils/request'
+import request from '@/utils/request'
 async function test () {
   const res = await request.get('/home/index')
   console.log(res)
@@ -8,9 +8,15 @@ test()
 </script>
 
 <template>
-  <div>i am app</div>
+  <div id="test-app">i am app</div>
 </template>
 
-<style>
-
+<style lang="less">
+#test-app {
+  width: 100px;
+  height: 100px;
+  background-color: @xtxColor;
+  .hoverShadow ();
+  border: 10px solid black;
+}
 </style>
