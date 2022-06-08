@@ -1,23 +1,27 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li v-for="(item,index) in category.list" :key="index"
+    <li
+      v-for="(item, index) in category.list"
+      :key="index"
       @mouseenter="category.show(item.id)"
       @mouseleave="category.hide(item.id)"
     >
-      <router-link :to="item.id ? `/category/${item.id}` : '/'"
+      <router-link
+        :to="item.id ? `/category/${item.id}` : '/'"
         @click="category.hide(item.id)"
-      >{{item.name}}</router-link>
+        >{{ item.name }}</router-link
+      >
       <!-- 新增++++++++ -->
-      <div :class="{open: item.open}" class="layer" v-if="item.children">
+      <div :class="{ open: item.open }" class="layer" v-if="item.children">
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
-            <router-link :to="`/category/sub/${sub.id}`" @click="category.hide(item.id)">
-              <img
-                :src="sub.picture"
-                alt=""
-              />
-              <p>{{sub.name}}</p>
+            <router-link
+              :to="`/category/sub/${sub.id}`"
+              @click="category.hide(item.id)"
+            >
+              <img :src="sub.picture" alt="" />
+              <p>{{ sub.name }}</p>
             </router-link>
           </li>
         </ul>
@@ -28,11 +32,11 @@
 </template>
 
 <script setup lang="ts" name="AppHeaderNav">
-import useStore from '@/store';
+import useStore from "@/store";
 
-const {category} = useStore()
+const { category } = useStore();
 // console.log({list: JSON.stringify(category.list)})
-category.getCategoryList()
+category.getCategoryList();
 </script>
 
 <style scoped lang="less">

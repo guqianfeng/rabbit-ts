@@ -1,5 +1,5 @@
 <script lang="ts" setup name="AppHeader">
-import AppHeaderNav from './app-header-nav.vue';
+import AppHeaderNav from "./app-header-nav.vue";
 //
 </script>
 
@@ -7,7 +7,7 @@ import AppHeaderNav from './app-header-nav.vue';
   <header class="app-header">
     <div class="container">
       <h1 class="logo"><RouterLink to="/">小兔鲜</RouterLink></h1>
-      <AppHeaderNav/>
+      <AppHeaderNav />
       <div class="search">
         <i class="iconfont icon-search"></i>
         <input type="text" placeholder="搜一搜" />
@@ -35,7 +35,7 @@ import AppHeaderNav from './app-header-nav.vue';
       height: 132px;
       width: 100%;
       text-indent: -9999px;
-      background: url('@/assets/images/logo.png') no-repeat center 18px /
+      background: url("@/assets/images/logo.png") no-repeat center 18px /
         contain;
     }
   }

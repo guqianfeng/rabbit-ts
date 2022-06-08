@@ -1,6 +1,6 @@
-import useCategoryStore from './modules/category'
+import useCategoryStore from "./modules/category";
 export default function useStore() {
   return {
-    category: useCategoryStore()
-  }
+    category: useCategoryStore(),
+  };
 }
