@@ -7,7 +7,9 @@ import AppFooter from "./components/app-footer.vue";
 <template>
   <AppTopnav></AppTopnav>
   <AppHeader></AppHeader>
-  <main class="app-body"></main>
+  <main class="app-body">
+    <router-view></router-view>
+  </main>
   <AppFooter></AppFooter>
 </template>
 
