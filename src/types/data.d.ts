@@ -10,4 +10,15 @@ export type CategoryItem = {
   picture: string;
   children: CategoryItem[];
   open: boolean;
+  goods: GoodsItem[];
+};
+
+export type GoodsItem = {
+  desc: string;
+  discount: null;
+  id: string;
+  name: string;
+  orderNum: null;
+  picture: string;
+  price: string;
 };
