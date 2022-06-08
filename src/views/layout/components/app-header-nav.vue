@@ -1,13 +1,18 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li v-for="(item,index) in category.list" :key="index">
-      <router-link :to="item.id ? `/category/${item.id}` : '/'">{{item.name}}</router-link>
+    <li v-for="(item,index) in category.list" :key="index"
+      @mouseenter="category.show(item.id)"
+      @mouseleave="category.hide(item.id)"
+    >
+      <router-link :to="item.id ? `/category/${item.id}` : '/'"
+        @click="category.hide(item.id)"
+      >{{item.name}}</router-link>
       <!-- 新增++++++++ -->
-      <div class="layer" v-if="item.children">
+      <div :class="{open: item.open}" class="layer" v-if="item.children">
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
-            <router-link :to="`/category/sub/${sub.id}`">
+            <router-link :to="`/category/sub/${sub.id}`" @click="category.hide(item.id)">
               <img
                 :src="sub.picture"
                 alt=""
@@ -57,15 +62,19 @@ category.getCategoryList()
         color: @xtxColor;
         border-bottom: 1px solid @xtxColor;
       }
-      > .layer {
-        height: 132px;
-        opacity: 1;
-      }
+      // > .layer {
+      //   height: 132px;
+      //   opacity: 1;
+      // }
     }
   }
 }
 // 新增样式
 .layer {
+  &.open {
+    height: 132px;
+    opacity: 1;
+  }
   width: 1240px;
   background-color: #fff;
   position: absolute;
