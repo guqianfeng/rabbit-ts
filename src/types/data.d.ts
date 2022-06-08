@@ -22,3 +22,10 @@ export type GoodsItem = {
   picture: string;
   price: string;
 };
+
+interface BannerItem {
+  id: string;
+  imgUrl: string;
+  hrefUrl: string;
+  type: string;
+}
