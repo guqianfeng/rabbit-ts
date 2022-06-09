@@ -4,7 +4,7 @@
     <li
       v-for="(item, index) in category.list"
       :key="index"
-      @mouseenter="category.show(item.id)"
+      @mousemove="category.show(item.id)"
       @mouseleave="category.hide(item.id)"
     >
       <router-link
