@@ -1,20 +1,51 @@
 <script lang="ts" setup name="HomeBrand">
 import useStore from "@/store";
 import { useLazyData } from "@/utils/hooks";
+import { ref } from "vue";
 import HomePanel from "./home-panel.vue";
 const { home } = useStore();
 const target = useLazyData(home.getBrandList);
+
+const activeIndex = ref(0);
+
+const onPrevClick = () => {
+  if (activeIndex.value === 0) return;
+  activeIndex.value--;
+};
+const onNextClick = () => {
+  if (activeIndex.value === Math.ceil(home.brandList.length / 5) - 1) return;
+  activeIndex.value++;
+};
 </script>
 
 <template>
   <HomePanel title="热门品牌" sub-title="国际经典 品质保证" ref="target">
     <template v-slot:right>
-      <a href="javascript:;" class="iconfont icon-angle-left prev"></a>
-      <a href="javascript:;" class="iconfont icon-angle-right next"></a>
+      <a
+        href="javascript:;"
+        class="iconfont icon-angle-left prev"
+        @click="onPrevClick"
+        :class="{ disabled: activeIndex === 0 }"
+      ></a>
+      <a
+        href="javascript:;"
+        class="iconfont icon-angle-right next"
+        @click="onNextClick"
+        :class="{
+          disabled: activeIndex === Math.ceil(home.brandList.length / 5) - 1,
+        }"
+      ></a>
     </template>
     <div class="box" ref="box">
       <Transition name="fade">
-        <ul class="list" v-if="home.bannerList.length">
+        <ul
+          class="list"
+          v-if="home.bannerList.length"
+          :style="{
+            transform: `translateX(${-1240 * activeIndex}px)`,
+            width: Math.ceil(home.brandList.length / 5) * 100 + '%',
+          }"
+        >
           <li v-for="item in home.brandList" :key="item.id">
             <RouterLink to="/">
               <img :src="item.picture" alt="" />

@@ -35,7 +35,12 @@ export default defineStore("home", {
       setTimeout(async () => {
         const res = await request.get<ApiRes<Brand[]>>("/home/brand");
         // console.log(res)
-        this.brandList = res.data.result;
+        this.brandList = [
+          ...res.data.result,
+          ...res.data.result,
+          ...res.data.result,
+          ...res.data.result,
+        ];
       }, 200);
     },
   },
