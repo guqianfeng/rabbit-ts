@@ -5,6 +5,7 @@ import HomeNew from "./components/home-new.vue";
 import HomeHot from "./components/home-hot.vue";
 import HomeBrand from "./components/home-brand.vue";
 import HomeProduct from "./components/home-product.vue";
+import HomeSpecial from "./components/home-special.vue";
 </script>
 
 <template>
@@ -26,6 +27,8 @@ import HomeProduct from "./components/home-product.vue";
     <HomeBrand />
     <!-- 生鮮产品 -->
     <HomeProduct />
+    <!-- 最新专题 -->
+    <HomeSpecial />
   </div>
 </template>
 

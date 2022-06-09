@@ -3,11 +3,17 @@ import { ref } from "vue";
 
 export function useLazyData(cb: () => void) {
   const target = ref(null);
-  const { stop } = useIntersectionObserver(target, ([{ isIntersecting }]) => {
-    if (isIntersecting) {
-      stop();
-      cb();
+  const { stop } = useIntersectionObserver(
+    target,
+    ([{ isIntersecting }]) => {
+      if (isIntersecting) {
+        stop();
+        cb();
+      }
+    },
+    {
+      threshold: 0,
     }
-  });
+  );
   return target;
 }
