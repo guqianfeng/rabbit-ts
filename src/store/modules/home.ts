@@ -17,14 +17,18 @@ export default defineStore("home", {
       this.bannerList = res.data.result;
     },
     async getNewGoodsList() {
-      const res = await request.get<ApiRes<NewGoodsItem[]>>("/home/new");
-      // console.log(res)
-      this.newGoodsList = res.data.result;
+      setTimeout(async () => {
+        const res = await request.get<ApiRes<NewGoodsItem[]>>("/home/new");
+        // console.log(res)
+        this.newGoodsList = res.data.result;
+      }, 2000);
     },
     async getHotGoodsList() {
-      const res = await request.get<ApiRes<HotGoodsItem[]>>("/home/hot");
-      // console.log(res)
-      this.hotGoodsList = res.data.result;
+      setTimeout(async () => {
+        const res = await request.get<ApiRes<HotGoodsItem[]>>("/home/hot");
+        // console.log(res)
+        this.hotGoodsList = res.data.result;
+      }, 2000);
     },
   },
 });

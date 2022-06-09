@@ -1,20 +1,27 @@
 <script lang="ts" setup>
 import useStore from "@/store";
+import { useLazyData } from "@/utils/hooks";
 import HomePanel from "./home-panel.vue";
+import HomeSkeleton from "./home-skeleton.vue";
 const { home } = useStore();
-home.getHotGoodsList();
+const target = useLazyData(home.getHotGoodsList);
 </script>
 <template>
-  <HomePanel title="人气推荐" sub-title="人气爆款 不容错过">
-    <ul ref="pannel" class="goods-list">
-      <li v-for="item in home.hotGoodsList" :key="item.id">
-        <RouterLink to="/">
-          <img :src="item.picture" alt="" />
-          <p class="name">{{ item.title }}</p>
-          <p class="desc">{{ item.alt }}</p>
-        </RouterLink>
-      </li>
-    </ul>
+  <HomePanel ref="target" title="人气推荐" sub-title="人气爆款 不容错过">
+    <Transition name="fade">
+      <ul ref="pannel" class="goods-list" v-if="home.hotGoodsList.length">
+        <li v-for="item in home.hotGoodsList" :key="item.id">
+          <RouterLink to="/">
+            <img v-lazy="item.picture" alt="" />
+            <p class="name">{{ item.title }}</p>
+            <p class="desc">{{ item.alt }}</p>
+          </RouterLink>
+        </li>
+      </ul>
+      <template v-else>
+        <HomeSkeleton />
+      </template>
+    </Transition>
   </HomePanel>
 </template>
 

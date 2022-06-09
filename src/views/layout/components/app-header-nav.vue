@@ -36,7 +36,6 @@ import useStore from "@/store";
 
 const { category } = useStore();
 // console.log({list: JSON.stringify(category.list)})
-category.getCategoryList();
 </script>
 
 <style scoped lang="less">
