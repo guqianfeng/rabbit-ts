@@ -1,4 +1,4 @@
-import { HotGoodsItem } from "./../../types/data.d";
+import { Brand, HotGoodsItem } from "./../../types/data.d";
 import { ApiRes, BannerItem, NewGoodsItem } from "@/types/data";
 import request from "@/utils/request";
 import { defineStore } from "pinia";
@@ -8,6 +8,7 @@ export default defineStore("home", {
       bannerList: [] as BannerItem[],
       newGoodsList: [] as NewGoodsItem[],
       hotGoodsList: [] as HotGoodsItem[],
+      brandList: [] as Brand[],
     };
   },
   actions: {
@@ -21,14 +22,21 @@ export default defineStore("home", {
         const res = await request.get<ApiRes<NewGoodsItem[]>>("/home/new");
         // console.log(res)
         this.newGoodsList = res.data.result;
-      }, 2000);
+      }, 200);
     },
     async getHotGoodsList() {
       setTimeout(async () => {
         const res = await request.get<ApiRes<HotGoodsItem[]>>("/home/hot");
         // console.log(res)
         this.hotGoodsList = res.data.result;
-      }, 2000);
+      }, 200);
+    },
+    async getBrandList() {
+      setTimeout(async () => {
+        const res = await request.get<ApiRes<Brand[]>>("/home/brand");
+        // console.log(res)
+        this.brandList = res.data.result;
+      }, 200);
     },
   },
 });
