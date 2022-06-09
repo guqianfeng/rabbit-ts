@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import useStore from "@/store";
 import HomePanel from "./home-panel.vue";
+import DefaultImg from "@/assets/images/200.png";
 const { home } = useStore();
 home.getNewGoodsList();
 </script>
@@ -12,7 +13,7 @@ home.getNewGoodsList();
       <ul class="goods-list">
         <li v-for="item in home.newGoodsList" :key="item.id">
           <RouterLink to="/">
-            <img :src="item.picture" alt="" />
+            <img :src="item.picture || DefaultImg" alt="" />
             <p class="name ellipsis">{{ item.name }}</p>
             <p class="price">&yen;{{ item.price }}</p>
           </RouterLink>
