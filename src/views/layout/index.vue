@@ -17,6 +17,6 @@ import AppHeaderSticky from "./components/app-header-sticky.vue";
 
 <style lang="less" scoped>
 .app-body {
-  min-height: 600px;
+  min-height: 2000px;
 }
 </style>

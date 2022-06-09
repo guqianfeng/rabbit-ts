@@ -23,9 +23,26 @@ export type GoodsItem = {
   price: string;
 };
 
-interface BannerItem {
+export interface BannerItem {
   id: string;
   imgUrl: string;
   hrefUrl: string;
   type: string;
 }
+
+export interface NewGoodsItem {
+  id: string;
+  name: string;
+  desc: string;
+  price: string;
+  picture: string;
+  discount?: any;
+  orderNum: number;
+}
+
+export type HotGoodsItem = {
+  id: string;
+  picture: string;
+  title: string;
+  alt: string;
+};
