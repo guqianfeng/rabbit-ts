@@ -4,6 +4,7 @@ import { useLazyData } from "@/utils/hooks";
 import HomePanel from "./home-panel.vue";
 const { home } = useStore();
 const target = useLazyData(home.getProductList);
+// test
 </script>
 <template>
   <div class="home-product" ref="target">
