@@ -1,10 +1,16 @@
 <script lang="ts" setup name="XtxCarousel">
 import { BannerItem } from "@/types/data";
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 
 //
-const props = defineProps<{
+const {
+  slides,
+  autoplay = false,
+  duration = 3000,
+} = defineProps<{
   slides: BannerItem[];
+  autoplay?: boolean;
+  duration?: number;
 }>();
 
 const activeIndex = ref(0);
@@ -12,22 +18,43 @@ const activeIndex = ref(0);
 const onPrevClick = () => {
   activeIndex.value--;
   if (activeIndex.value < 0) {
-    activeIndex.value = props.slides.length - 1;
+    activeIndex.value = slides.length - 1;
   }
 };
 
 const onNextClick = () => {
   activeIndex.value++;
-  // if (activeIndex.value > props.slides.length - 1) {
+  // if (activeIndex.value > slides.length - 1) {
   //   activeIndex.value = 0
   // }
-  activeIndex.value %= props.slides.length;
+  activeIndex.value %= slides.length;
   // console.log(activeIndex.value)
 };
+
+let timer: number = 0;
+
+const play = () => {
+  if (!autoplay) return;
+  timer && clearInterval(timer);
+  timer = window.setInterval(() => {
+    onNextClick();
+  }, duration);
+};
+
+const stop = () => {
+  clearInterval(timer);
+};
+
+onMounted(() => {
+  play();
+});
+onUnmounted(() => {
+  stop();
+});
 </script>
 
 <template>
-  <div class="xtx-carousel">
+  <div class="xtx-carousel" @mouseenter="stop" @mouseleave="play">
     <ul class="carousel-body">
       <li
         :class="{ fade: activeIndex === index }"
@@ -51,7 +78,7 @@ const onNextClick = () => {
         :class="{ active: activeIndex === index }"
         v-for="(item, index) in slides"
         :key="item.id"
-        @click="activeIndex = index"
+        @mouseenter="activeIndex = index"
       ></span>
     </div>
   </div>

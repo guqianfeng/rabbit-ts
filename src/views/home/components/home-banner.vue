@@ -7,7 +7,7 @@ home.getBannerList();
 <template>
   <div class="home-banner">
     <!-- 轮播图 -->
-    <XtxCarousel :slides="home.bannerList" />
+    <XtxCarousel :slides="home.bannerList" autoplay :duration="2000" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ home.getBannerList();
   left: 0;
   top: 0;
   z-index: 98;
-  background-color: pink;
+  // background-color: pink;
   :deep(.carousel-btn.prev) {
     left: 270px !important;
   }

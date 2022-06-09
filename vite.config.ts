@@ -6,7 +6,12 @@ const path = require("path");
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueSetupExtend()],
+  plugins: [
+    vue({
+      reactivityTransform: true,
+    }),
+    vueSetupExtend(),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
