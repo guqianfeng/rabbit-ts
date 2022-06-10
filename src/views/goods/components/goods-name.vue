@@ -7,7 +7,7 @@ defineProps<{
   goods: GoodsInfo;
 }>();
 
-const useAddress = ref("上海市 杨浦区");
+const useAddress = ref("上海 上海市 杨浦区");
 
 const changeCity = ({ provinceName, cityName, countyName }: CityResult) => {
   useAddress.value = `${provinceName} ${cityName} ${countyName}`;
