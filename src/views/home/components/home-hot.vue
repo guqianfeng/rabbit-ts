@@ -11,7 +11,7 @@ const target = useLazyData(home.getHotGoodsList);
     <Transition name="fade">
       <ul ref="pannel" class="goods-list" v-if="home.hotGoodsList.length">
         <li v-for="item in home.hotGoodsList" :key="item.id">
-          <RouterLink to="/">
+          <RouterLink :to="`/goods/${item.id}`">
             <img v-lazy="item.picture" alt="" />
             <p class="name">{{ item.title }}</p>
             <p class="desc">{{ item.alt }}</p>

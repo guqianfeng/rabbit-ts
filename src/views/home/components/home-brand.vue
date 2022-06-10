@@ -47,7 +47,7 @@ const onNextClick = () => {
           }"
         >
           <li v-for="item in home.brandList" :key="item.id">
-            <RouterLink to="/">
+            <RouterLink :to="`/goods/${item.id}`">
               <img :src="item.picture" alt="" />
             </RouterLink>
           </li>
