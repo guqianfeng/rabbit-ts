@@ -17,5 +17,8 @@ export default defineStore("goods", {
       });
       this.info = res.data.result;
     },
+    resetGoodsInfo() {
+      this.info = {} as GoodsInfo;
+    },
   },
 });

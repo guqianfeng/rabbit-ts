@@ -16,9 +16,20 @@ const { info } = storeToRefs(goods);
 watchEffect(() => {
   const id = route.params.id as string;
   if (id && route.fullPath === `/goods/${id}`) {
+    goods.resetGoodsInfo();
     goods.getGoodsInfo(id);
   }
 });
+
+const changeSku = (skuId: string) => {
+  // console.log(skuId)
+  const res = info.value.skus.find((item) => item.id === skuId);
+  if (!res) return;
+  // console.log(res)
+  info.value.oldPrice = res.oldPrice;
+  info.value.price = res.price;
+  info.value.inventory = res.inventory;
+};
 </script>
 <template>
   <div class="xtx-goods-page">
@@ -44,7 +55,7 @@ watchEffect(() => {
           </div>
           <div class="spec">
             <GoodsName :goods="info" />
-            <GoodsSku :goods="info" />
+            <GoodsSku :goods="info" @change-sku="changeSku" />
           </div>
         </div>
         <!-- 商品详情 -->

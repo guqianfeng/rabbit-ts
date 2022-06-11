@@ -5,6 +5,11 @@ import bwPowerSet from "@/utils/power-set";
 
 const props = defineProps<{
   goods: GoodsInfo;
+  skuId?: string;
+}>();
+
+const emit = defineEmits<{
+  (e: "changeSku", skuId: string): void;
 }>();
 
 const changeSelected = (spec: Spec, specValue: SpecValue) => {
@@ -14,6 +19,19 @@ const changeSelected = (spec: Spec, specValue: SpecValue) => {
   } else {
     spec.values.forEach((item) => (item.selected = false));
     specValue.selected = true;
+  }
+  // const arr = getSelectedSpec()
+  // console.log(arr)
+  getDisabledStatus();
+
+  const resultArr = getSelectedSpec().filter((item) => item);
+  // console.log(resultArr, resultArr.length)
+  if (resultArr.length === props.goods.specs.length) {
+    // console.log('选完了')
+    const key = resultArr.join("+");
+    const result = pathMap[key];
+    // console.log(result[0])
+    emit("changeSku", result[0]);
   }
 };
 
@@ -45,16 +63,48 @@ const getPathMap = () => {
 };
 
 const getDisabledStatus = () => {
-  props.goods.specs.forEach((spec) => {
+  const selectedArr = getSelectedSpec();
+  props.goods.specs.forEach((spec, index) => {
     // console.log(spec)
     spec.values.forEach((specValue) => {
-      specValue.disabled = !(specValue.name in pathMap);
+      const temp = [...selectedArr];
+      temp[index] = specValue.name;
+      // console.log(temp)
+      const key = temp.filter((item) => item).join("+");
+      specValue.disabled = !(key in pathMap);
     });
+  });
+};
+
+const getSelectedSpec = () => {
+  const arr: string[] = [];
+  props.goods.specs.forEach((spec, index) => {
+    // console.log(spec)
+    const selected = spec.values.find((item) => item.selected);
+    arr[index] = selected ? selected.name : "";
+  });
+  return arr;
+};
+
+const initSelected = () => {
+  const skuId = props.skuId;
+  if (!skuId) return;
+  // console.log(skuId)
+  const sku = props.goods.skus.find((item) => (item.id = skuId));
+  if (!sku) return;
+  // console.log(sku)
+  props.goods.specs.forEach((spec, index) => {
+    // console.log(spec, index, sku.specs[index].valueName)
+    const btn = spec.values.find(
+      (specValue) => specValue.name === sku.specs[index].valueName
+    );
+    btn!.selected = true;
   });
 };
 
 const pathMap = getPathMap();
 // console.log(pathMap)
+initSelected();
 getDisabledStatus();
 </script>
 <template>
