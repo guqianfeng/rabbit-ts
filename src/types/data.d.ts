@@ -173,6 +173,7 @@ export type SpecValue = {
   name: string;
   picture: string;
   selected: boolean;
+  disabled: boolean;
 };
 
 export type Sku = {
