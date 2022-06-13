@@ -7,6 +7,7 @@ import XtxBreadItem from "@/components/bread/item.vue";
 import XtxCity from "@/components/city/index.vue";
 import XtxNumbox from "@/components/numbox/index.vue";
 import XtxButton from "@/components/button/index.vue"
+import XtxCheckbox from "@/components/checkbox/index.vue"
 import defaultImg from "@/assets/images/200.png";
 import { useIntersectionObserver } from "@vueuse/core";
 
@@ -20,6 +21,7 @@ export default {
     app.component(XtxCity.name, XtxCity);
     app.component(XtxNumbox.name, XtxNumbox);
     app.component(XtxButton.name, XtxButton);
+    app.component(XtxCheckbox.name, XtxCheckbox);
 
     app.directive("lazy", (el, { value }) => {
       const { stop } = useIntersectionObserver(el, ([{ isIntersecting }]) => {
