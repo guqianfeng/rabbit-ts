@@ -1,4 +1,8 @@
 <template>
+  <h1>我是父组件 - {{money}} - {{score}}</h1>
+  <hr>
+  <Son v-model:money="money" v-model="score"/>
+  <br><br><br><br><br><br><br><br><br><br>
   <button @click="flag = !flag">切换</button>
   <Transition name="bounce">
     <div class="play-box" v-if="flag"></div>
@@ -10,6 +14,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
+import Son from "./components/son.vue";
 const flag = ref(true);
 // http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/4a79180a-1a5a-4042-8a77-4db0b9c800a8.jpg
 const target = ref<null | HTMLImageElement>(null);
@@ -26,6 +31,15 @@ const { stop } = useIntersectionObserver(
     }
   }
 );
+const money = ref(100)
+const changeHandle = (value: number) => {
+  if (value < 90) {
+    alert('别花了')
+  } else {
+    money.value = value
+  }
+}
+const score = ref(0)
 </script>
 
 <style scoped lang="less">

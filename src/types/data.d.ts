@@ -160,6 +160,7 @@ export type GoodsInfo = {
   }[];
   specs: Spec[];
   skus: Sku[];
+  details: GoodsDetail
 };
 
 // 商品的规格类型
@@ -187,3 +188,11 @@ export type Sku = {
     valueName: string;
   }[];
 };
+
+type GoodsDetail = {
+  pictures: string[]
+  properties: {
+    name: string
+    value: string
+  }[]
+}

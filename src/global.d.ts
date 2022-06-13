@@ -4,6 +4,8 @@ import XtxMore from "@/components/more/index.vue";
 import XtxBread from "@/components/bread/index.vue";
 import XtxBreadItem from "@/components/bread/item.vue";
 import XtxCity from "@/components/city/index.vue";
+import XtxNumbox from "@/components/numbox/index.vue";
+import XtxButton from "@/components/button/index.vue"
 declare module "vue" {
   export interface GlobalComponents {
     XtxSkeleton: typeof XtxSkeleton;
@@ -12,5 +14,7 @@ declare module "vue" {
     XtxBread: typeof XtxBread;
     XtxBreadItem: typeof XtxBreadItem;
     XtxCity: typeof XtxCity;
+    XtxNumbox: typeof XtxNumbox;
+    XtxButton: typeof XtxButton;
   }
 }
