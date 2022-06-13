@@ -24,10 +24,11 @@ onMounted(() => {
 
 const handleShow = () => {
   console.log('show')
-  Message({
-    type: 'success',
-    text: '成功啦'
-  })
+  // Message({
+  //   type: 'success',
+  //   text: '成功啦'
+  // })
+  Message.success('你成功啦')
 }
 </script>
 

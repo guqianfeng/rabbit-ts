@@ -18,3 +18,27 @@ export default function Message ({type, text, duration = 1500}: MessageParams) {
         render(null, xtxMessageContainer)
     }, duration)
 }
+
+Message.success = function (text: string, duration = 1500) {
+    Message({
+        type: 'success',
+        text,
+        duration
+    })
+}
+
+Message.error = function (text: string, duration = 1500) {
+    Message({
+        type: 'error',
+        text,
+        duration
+    })
+}
+
+Message.warning = function (text: string, duration = 1500) {
+    Message({
+        type: 'warning',
+        text,
+        duration
+    })
+}
