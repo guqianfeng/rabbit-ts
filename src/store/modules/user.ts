@@ -18,6 +18,16 @@ export default defineStore('user', {
                 password
             })
             this.profile = res.data.result
+            localStorage.setItem('xtx_profile', JSON.stringify(this.profile))
+        },
+
+        setLocalStorageProfile () {
+            const str = localStorage.getItem('xtx_profile')
+            if (str) {
+                const profile = JSON.parse(str)
+                // console.log(profile)
+                this.profile = profile
+            }
         }
     }
 })

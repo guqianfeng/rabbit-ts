@@ -2,8 +2,10 @@
 import Message from '@/components/message';
 import useStore from '@/store';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const { user } = useStore()
+const router = useRouter()
 const activeName = ref<'account' | 'mobile'>('account')
 const form = ref({
     account: '',
@@ -18,9 +20,22 @@ const handleChange = (value: boolean) => {
 const login = async () => {
     // console.log(form.value)
     // cdshi0006 123456
+    if (form.value.account === '') {
+        Message({ type: 'error', text: '用户名或手机号不能为空' })
+        return
+    }
+    if (form.value.password === '') {
+        Message({ type: 'error', text: '密码不能为空' })
+        return
+    }
+    if (!form.value.isAgree) {
+        Message({ type: 'error', text: '请同意许可' })
+        return
+    }
     try {
         await user.login(form.value.account, form.value.password)
         Message.success('登录成功')
+        router.push('/')
     } catch (e) {
         Message.error('登录失败')
     }
