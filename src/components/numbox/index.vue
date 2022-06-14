@@ -1,6 +1,9 @@
 <script lang="ts" setup name="XtxNumbox">
+import { ComponentInternalInstance, getCurrentInstance } from 'vue';
+
 //
-const {modelValue, max, min = 1, step = 1} = defineProps<{
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+const {modelValue, max = 100, min = 1, step = 1} = defineProps<{
   modelValue: number,
   min?: number,
   max?: number,
@@ -20,13 +23,24 @@ const add = () => {
   if (modelValue >= max) return;
   emit('update:modelValue', modelValue + step)
 }
+
+const handleChange = (e: Event) => {
+  const el = e.target as HTMLInputElement
+  let value = +el.value
+  // console.log({min, value, max})
+  if (isNaN(value)) value = 1
+  value = Math.min(Math.max(min, value), max)
+  // console.log(value)
+  emit('update:modelValue', value)
+  proxy!.$forceUpdate()
+}
 </script>
 <template>
   <div class="xtx-numbox">
     <div class="label">数量</div>
     <div class="numbox">
       <a href="javascript:;" @click="sub" :class="{not: min === modelValue}">-</a>
-      <input type="text" readonly :value="modelValue" />
+      <input type="text" :value="modelValue" @change="handleChange"/>
       <a href="javascript:;" @click="add" :class="{not: max === modelValue}">+</a>
     </div>
   </div>
