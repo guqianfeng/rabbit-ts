@@ -62,13 +62,9 @@ const login = async () => {
     const res = await validate()
     console.log(res)
     if (!res.valid) return;
-    try {
-        await user.login(account.value, password.value)
-        Message.success('登录成功')
-        router.push('/')
-    } catch (e) {
-        Message.error('登录失败')
-    }
+    await user.login(account.value, password.value)
+    Message.success('登录成功')
+    router.push('/')
 }
 
 watch(activeName, () => {
@@ -77,12 +73,15 @@ watch(activeName, () => {
 
 const mobileRef = ref<null | HTMLInputElement>(null)
 const sendCode = async () => {
+    // 13012345678
     const res = await mobileValidate()
     if (!res.valid) {
         mobileRef.value?.focus()
         return;
     }
-    console.log('send')
+    // console.log('send')
+    await user.getMobileCode(mobile.value)
+    Message.success('发送验证码成功')
 }
 </script>
 <template>

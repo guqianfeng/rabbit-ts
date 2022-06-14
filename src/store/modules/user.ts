@@ -28,6 +28,15 @@ export default defineStore('user', {
                 // console.log(profile)
                 this.profile = profile
             }
+        },
+
+        async getMobileCode (mobile: string) {
+            const res = await request.get('/login/code', {
+                params: {
+                    mobile
+                }
+            })
+            console.log(res)
         }
     }
 })

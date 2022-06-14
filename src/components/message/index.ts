@@ -7,6 +7,8 @@ export type MessageParams = {
     duration?: number
 }
 
+let timer: number = -1
+
 const xtxMessageContainer = document.createElement('div')
 xtxMessageContainer.className = 'xtx-msg-container'
 document.body.appendChild(xtxMessageContainer)
@@ -14,7 +16,8 @@ document.body.appendChild(xtxMessageContainer)
 export default function Message ({type, text, duration = 1500}: MessageParams) {
     const vNode = h(XtxMessage, {type, text})
     render(vNode, xtxMessageContainer)
-    setTimeout(() => {
+    clearTimeout(timer)
+    timer = window.setTimeout(() => {
         render(null, xtxMessageContainer)
     }, duration)
 }
