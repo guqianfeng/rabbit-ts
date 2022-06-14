@@ -3,7 +3,6 @@ import useStore from '@/store';
 
 const {user} = useStore()
 
-user.setLocalStorageProfile()
 </script>
 
 <template>
@@ -12,7 +11,7 @@ user.setLocalStorageProfile()
       <ul>
         <template v-if="user.profile.token">
           <li>
-            <RouterLink to="/" href="javascript:;"><i class="iconfont icon-user"></i>{{user.profile.nickname}}</RouterLink>
+            <RouterLink to="/" href="javascript:;"><i class="iconfont icon-user"></i>{{user.profile.nickname || user.profile.account}}</RouterLink>
           </li>
           <li>
             <RouterLink to="/" href="javascript:;">退出登录</RouterLink>

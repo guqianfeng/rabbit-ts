@@ -2,10 +2,11 @@ import { ApiRes } from '@/types/data';
 import { Profile } from './../../types/data.d';
 import { defineStore } from 'pinia';
 import request from '@/utils/request';
+import { getProfile, setProfile } from '@/utils/localStorage';
 export default defineStore('user', {
     state() {
         return {
-            profile: {} as Profile
+            profile: getProfile()
         }
     },
     getters: {
@@ -18,16 +19,7 @@ export default defineStore('user', {
                 password
             })
             this.profile = res.data.result
-            localStorage.setItem('xtx_profile', JSON.stringify(this.profile))
-        },
-
-        setLocalStorageProfile () {
-            const str = localStorage.getItem('xtx_profile')
-            if (str) {
-                const profile = JSON.parse(str)
-                // console.log(profile)
-                this.profile = profile
-            }
+            setProfile(res.data.result)
         },
 
         async getMobileCode (mobile: string) {
@@ -37,6 +29,15 @@ export default defineStore('user', {
                 }
             })
             console.log(res)
-        }
+        },
+
+        async mobileLogin(mobile: string, code: string) {
+            const res = await request.post<ApiRes<Profile>>('/login/code', {
+              mobile,
+              code
+            })
+            this.profile = res.data.result
+            setProfile(res.data.result)
+          },
     }
 })

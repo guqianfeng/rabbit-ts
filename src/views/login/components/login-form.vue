@@ -4,27 +4,24 @@ import useStore from '@/store';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useForm, useField } from 'vee-validate'
-import { useIntervalFn } from '@vueuse/core'
+import { useCountdown } from '@/utils/hooks'
 
 const { user } = useStore()
 const router = useRouter()
 const activeName = ref<'account' | 'mobile'>('account')
-// const form = ref({
-//     account: '',
-//     password: '',
-//     isAgree: false
-// })
 
 const handleChange = (value: boolean) => {
-    console.log(value)
+    // console.log(value)
 }
 
 const { validate, resetForm } = useForm({
-    // initialValues: {
-    //     account: '',
-    //     password: '',
-    //     isAgree: false
-    // },
+    initialValues: {
+        mobile: '13666666666',
+        code: '123456',
+        account: 'xiaotuxian001',
+        password: '123456',
+        isAgree: true
+    },
     validationSchema: {
         account(value: string) {
             if (!value) return '请输入用户名'
@@ -61,9 +58,16 @@ const { value: code, errorMessage: codeError } = useField<string>('code')
 
 const login = async () => {
     const res = await validate()
-    console.log(res)
-    if (!res.valid) return;
-    await user.login(account.value, password.value)
+    // if (!res.valid) return;
+    if (activeName.value === 'account') {
+        // console.log('账号登录')
+        if (res.errors.account || res.errors.password || res.errors.isAgree) return;
+        await user.login(account.value, password.value)
+    } else {
+        // console.log('手机登录')
+        if (res.errors.mobile || res.errors.code || res.errors.isAgree) return;
+        await user.mobileLogin(mobile.value, code.value)
+    }
     Message.success('登录成功')
     router.push('/')
 }
@@ -72,39 +76,19 @@ watch(activeName, () => {
     resetForm()
 })
 
-const { pause, resume } = useIntervalFn(() => {
-    time.value--;
-    if (time.value <= 0) {
-        pause()
-    }
-}, 1000, {
-    immediate: false
-})
-
-const time = ref(0)
-// let timer = -1
+const { time, start } = useCountdown()
 const mobileRef = ref<null | HTMLInputElement>(null)
 const sendCode = async () => {
-
     // 13012345678
-    // const res = await mobileValidate()
-    // if (!res.valid) {
-    //     mobileRef.value?.focus()
-    //     return;
-    // }
-    // // console.log('send')
-    // await user.getMobileCode(mobile.value)
-    // Message.success('发送验证码成功')
     if (time.value > 0) return;
-    time.value = 5;
-    // clearInterval(timer)
-    // timer = window.setInterval(() => {
-    //     time.value--;
-    //     if (time.value <= 0) {
-    //         clearInterval(timer)
-    //     }
-    // }, 1000)
-    resume()
+    const res = await mobileValidate()
+    if (!res.valid) {
+        mobileRef.value?.focus()
+        return;
+    }
+    await user.getMobileCode(mobile.value)
+    Message.success('发送验证码成功')
+    start()
 }
 </script>
 <template>
