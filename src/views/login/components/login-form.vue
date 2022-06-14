@@ -3,7 +3,8 @@ import Message from '@/components/message';
 import useStore from '@/store';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import {useForm, useField} from 'vee-validate'
+import { useForm, useField } from 'vee-validate'
+import { useIntervalFn } from '@vueuse/core'
 
 const { user } = useStore()
 const router = useRouter()
@@ -18,33 +19,33 @@ const handleChange = (value: boolean) => {
     console.log(value)
 }
 
-const {validate, resetForm} = useForm({
+const { validate, resetForm } = useForm({
     // initialValues: {
     //     account: '',
     //     password: '',
     //     isAgree: false
     // },
     validationSchema: {
-        account (value: string) {
+        account(value: string) {
             if (!value) return '请输入用户名'
             if (!/^\w{6,20}$/.test(value)) return '密码必须是6-20位字符'
             return true
         },
-        password (value: string) {
+        password(value: string) {
             if (!value) return '请输入密码'
             if (!/^\w{6,20}$/.test(value)) return '密码必须是6-20位字符'
             return true;
         },
-        isAgree (value: boolean) {
+        isAgree(value: boolean) {
             if (!value) return '请先同意'
             return true;
         },
-        mobile (value: string) {
+        mobile(value: string) {
             if (!value) return '请输入手机号'
             if (!/^1[3-9]\d{9}$/.test(value)) return '手机号格式有误'
             return true;
         },
-        code (value: string) {
+        code(value: string) {
             if (!value) return '请输入验证码'
             if (!/^\d{6}$/.test(value)) return '验证码格式有误'
             return true;
@@ -52,11 +53,11 @@ const {validate, resetForm} = useForm({
     }
 })
 
-const {value: account, errorMessage: accountError} = useField<string>('account')
-const {value: password, errorMessage: passwordError} = useField<string>('password')
-const {value: isAgree, errorMessage: isAgreeError} = useField<boolean>('isAgree')
-const {value: mobile, errorMessage: mobileError, validate: mobileValidate} = useField<string>('mobile')
-const {value: code, errorMessage: codeError} = useField<string>('code')
+const { value: account, errorMessage: accountError } = useField<string>('account')
+const { value: password, errorMessage: passwordError } = useField<string>('password')
+const { value: isAgree, errorMessage: isAgreeError } = useField<boolean>('isAgree')
+const { value: mobile, errorMessage: mobileError, validate: mobileValidate } = useField<string>('mobile')
+const { value: code, errorMessage: codeError } = useField<string>('code')
 
 const login = async () => {
     const res = await validate()
@@ -71,17 +72,39 @@ watch(activeName, () => {
     resetForm()
 })
 
+const { pause, resume } = useIntervalFn(() => {
+    time.value--;
+    if (time.value <= 0) {
+        pause()
+    }
+}, 1000, {
+    immediate: false
+})
+
+const time = ref(0)
+// let timer = -1
 const mobileRef = ref<null | HTMLInputElement>(null)
 const sendCode = async () => {
+
     // 13012345678
-    const res = await mobileValidate()
-    if (!res.valid) {
-        mobileRef.value?.focus()
-        return;
-    }
-    // console.log('send')
-    await user.getMobileCode(mobile.value)
-    Message.success('发送验证码成功')
+    // const res = await mobileValidate()
+    // if (!res.valid) {
+    //     mobileRef.value?.focus()
+    //     return;
+    // }
+    // // console.log('send')
+    // await user.getMobileCode(mobile.value)
+    // Message.success('发送验证码成功')
+    if (time.value > 0) return;
+    time.value = 5;
+    // clearInterval(timer)
+    // timer = window.setInterval(() => {
+    //     time.value--;
+    //     if (time.value <= 0) {
+    //         clearInterval(timer)
+    //     }
+    // }, 1000)
+    resume()
 }
 </script>
 <template>
@@ -101,31 +124,33 @@ const sendCode = async () => {
                         <i class="iconfont icon-user"></i>
                         <input v-model="account" type="text" placeholder="请输入用户名" />
                     </div>
-                    <div class="error" v-if="accountError"><i class="iconfont icon-warning" />{{accountError}}</div>
+                    <div class="error" v-if="accountError"><i class="iconfont icon-warning" />{{ accountError }}</div>
                 </div>
                 <div class="form-item">
                     <div class="input">
                         <i class="iconfont icon-lock"></i>
                         <input v-model="password" type="password" placeholder="请输入密码" />
                     </div>
-                    <div class="error" v-if="passwordError"><i class="iconfont icon-warning" />{{passwordError}}</div>
+                    <div class="error" v-if="passwordError"><i class="iconfont icon-warning" />{{ passwordError }}</div>
                 </div>
             </template>
             <template v-else>
                 <div class="form-item">
                     <div class="input">
                         <i class="iconfont icon-user"></i>
-                        <input v-model="mobile" type="text" placeholder="请输入手机号" ref="mobileRef"/>
+                        <input v-model="mobile" type="text" placeholder="请输入手机号" ref="mobileRef" />
                     </div>
-                    <div class="error" v-if="mobileError"><i class="iconfont icon-warning" />{{mobileError}}</div>
+                    <div class="error" v-if="mobileError"><i class="iconfont icon-warning" />{{ mobileError }}</div>
                 </div>
                 <div class="form-item">
                     <div class="input">
                         <i class="iconfont icon-code"></i>
                         <input v-model="code" type="text" placeholder="请输入验证码" />
-                        <span class="code" @click="sendCode">发送验证码</span>
+                        <span class="code" @click="sendCode">
+                            {{ time === 0 ? '发送验证码' : `${time}s后发送` }}
+                        </span>
                     </div>
-                    <div class="error" v-if="codeError"><i class="iconfont icon-warning" />{{codeError}}</div>
+                    <div class="error" v-if="codeError"><i class="iconfont icon-warning" />{{ codeError }}</div>
                 </div>
             </template>
             <div class="form-item">
@@ -135,7 +160,7 @@ const sendCode = async () => {
                     <span>和</span>
                     <a href="javascript:;">《服务条款》</a>
                 </div>
-                <div class="error" v-if="isAgreeError"><i class="iconfont icon-warning" />{{isAgreeError}}</div>
+                <div class="error" v-if="isAgreeError"><i class="iconfont icon-warning" />{{ isAgreeError }}</div>
             </div>
             <a href="javascript:;" class="btn" @click="login">登录</a>
         </div>
