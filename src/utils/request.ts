@@ -1,6 +1,12 @@
 import Message from "@/components/message";
 import axios, { AxiosError } from "axios";
 
+/**
+ * 解绑手机号
+ * http://pcapi-xiaotuxian-front.itheima.net/login/social/unbind?mobile=手机号
+ * https://apipc-xiaotuxian-front.itheima.net/login/social/unbind?mobile=手机号
+ */
+
 // 备用接口地址: http://pcapi-xiaotuxian-front-devtest.itheima.net/
 const instance = axios.create({
   baseURL: "http://pcapi-xiaotuxian-front.itheima.net/",

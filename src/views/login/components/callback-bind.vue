@@ -6,18 +6,25 @@ import { useCountdown } from '@/utils/hooks';
 import { codeRule, mobileRule } from '@/utils/validate';
 import { useField, useForm } from 'vee-validate';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const { user } = useStore()
+const router = useRouter()
 
 const userInfo = ref<QQUserInfo>({} as QQUserInfo)
+
+let openId = ''
 
 if (QC.Login.check()) {
   QC.api('get_user_info').success((res: QQUserInfoRes) => {
     userInfo.value = res.data
   })
+  QC.Login.getMe(id => {
+    openId = id
+  })
 }
 
-useForm({
+const {validate} = useForm({
   validationSchema: {
     mobile: mobileRule,
     code: codeRule,
@@ -34,6 +41,14 @@ const send = async () => {
   await user.sendQQBindMsg(mobile.value)
   Message.success('验证码发送成功')
   start()
+}
+
+const bind = async () => {
+  const res = await validate()
+  if (!res.valid) return;
+  await user.qqBindLogin(openId, mobile.value, code.value)
+  Message.success('绑定成功')
+  router.push('/')
 }
 </script>
 <template>
@@ -57,7 +72,7 @@ const send = async () => {
       </div>
       <div class="error" v-if="codeError">{{ codeError }}</div>
     </div>
-    <a href="javascript:;" class="submit">立即绑定</a>
+    <a href="javascript:;" class="submit" @click="bind">立即绑定</a>
   </div>
 </template>
 

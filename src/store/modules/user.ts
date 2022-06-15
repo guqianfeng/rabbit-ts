@@ -60,6 +60,16 @@ export default defineStore('user', {
                     mobile
                 }
             })
-        }
+        },
+        async qqBindLogin(openId: string, mobile: string, code: string) {
+            const res = await request.post<ApiRes<Profile>>('/login/social/bind', {
+                mobile,
+                code,
+                unionId: openId
+            })
+            // 1. 保存用户信息到 state 中
+            this.profile = res.data.result
+            setProfile(res.data.result)
+        },
     }
 })
