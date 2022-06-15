@@ -71,5 +71,22 @@ export default defineStore('user', {
             this.profile = res.data.result
             setProfile(res.data.result)
         },
+        async sendQQPathMsg(mobile: string) {
+            await request.get('/register/code', {
+                params: {
+                    mobile
+                }
+            })
+        },
+
+        async qqPatchLogin(data: any) {
+            const res = await request.post<ApiRes<Profile>>(
+                `/login/social/${data.openId}/complement`,
+                data
+            )
+            // 1. 保存用户信息到 state 中
+            this.profile = res.data.result
+            setProfile(res.data.result)
+        }
     }
 })

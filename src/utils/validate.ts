@@ -22,3 +22,11 @@ export function codeRule(value: string) {
     if (!/^\d{6}$/.test(value)) return '验证码格式有误'
     return true;
 }
+
+export function rePasswordRule(value: string, { form }: any) {
+    if (!value) return '请输入确认密码'
+    if (!/^\w{6,24}$/.test(value)) return '密码是6-24个字符'
+    // 校验密码是否一致  form表单数据对象
+    if (value !== form.password) return '两次输入的密码不一致'
+    return true
+}
