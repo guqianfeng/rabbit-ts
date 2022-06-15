@@ -1,16 +1,24 @@
 <script lang="ts" setup name="AppTopnav">
+import Confirm from '@/components/confirm';
 import Message from '@/components/message';
 import useStore from '@/store';
 import { useRouter } from 'vue-router';
 
-const {user} = useStore()
+const { user } = useStore()
 
 const router = useRouter()
 
 const logoutFn = () => {
-  user.logout()
-  router.push('/login')
-  Message.success('退出成功')
+  Confirm({
+    title: '温馨提示',
+    text: '亲～你确定要退出么？'
+  }).then(() => {
+    user.logout()
+    router.push('/login')
+    Message.success('退出成功')
+  }).catch(() => {
+
+  })
 }
 
 </script>
@@ -21,7 +29,9 @@ const logoutFn = () => {
       <ul>
         <template v-if="user.profile.token">
           <li>
-            <RouterLink to="/" href="javascript:;"><i class="iconfont icon-user"></i>{{user.profile.nickname || user.profile.account}}</RouterLink>
+            <RouterLink to="/" href="javascript:;"><i class="iconfont icon-user"></i>{{ user.profile.nickname ||
+                user.profile.account
+            }}</RouterLink>
           </li>
           <li>
             <RouterLink to="/" href="javascript:;" @click="logoutFn">退出登录</RouterLink>

@@ -4,6 +4,7 @@
     <!-- <XtxMessage type="success">成功啦</XtxMessage>
     <XtxMessage type="error">失败啦</XtxMessage> -->
     <button @click="handleShow">show</button>
+    <!-- <XtxConfirm title="confirm-title" text="confirm-text"/> -->
   </div>
 </template>
 
@@ -11,6 +12,8 @@
 import { h, onMounted, render } from 'vue';
 import XtxMessage from '@/components/message/index.vue'
 import Message from '@/components/message';
+import XtxConfirm from '@/components/confirm/confirm.vue'
+import Confirm from '@/components/confirm';
 
 const vNode = h('h1', {
   className: 'my-h1-cls'
@@ -28,7 +31,15 @@ const handleShow = () => {
   //   type: 'success',
   //   text: '成功啦'
   // })
-  Message.success('你成功啦')
+  // Message.success('你成功啦')
+  Confirm({
+    title: '123',
+    text: '546'
+  }).then(() => {
+    console.log('点击了确认')
+  }).catch(() => {
+    console.log('点击了取消')
+  })
 }
 </script>
 
