@@ -10,6 +10,7 @@ import GoodsSku from "./components/goods-sku.vue";
 import GoodsDetail from "./components/goods-detail.vue";
 import GoodsHot from "./components/goods-hot.vue";
 import Message from "@/components/message";
+import { CartItem } from "@/types/cart";
 
 const { goods, cart } = useStore();
 const route = useRoute();
@@ -45,10 +46,28 @@ const addCart = async () => {
     return;
   }
   // console.log('add cart')
+
+// 当前需要添加的商品的sku
+  const sku = info.value.skus.find((item) => item.id === currentSkuId)!
+  const attrsText = sku.specs
+    .map((item) => item.name + ':' + item.valueName)
+    .join(' ')
+  // console.log(attrsText)
+
   await cart.addCart({
+    // 本地添加
+    id: info.value.id,
+    name: info.value.name,
+    picture: info.value.mainPictures[0],
+    price: info.value.price,
+    count: count.value,
     skuId: currentSkuId,
-    count: count.value
-  })
+    attrsText,
+    selected: true,
+    nowPrice: info.value.price,
+    stock: info.value.inventory,
+    isEffective: true,
+  } as CartItem)
   Message.success('购物车加入成功')
 }
 </script>

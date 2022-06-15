@@ -7,7 +7,7 @@ import { useForm, useField } from 'vee-validate'
 import { useCountdown } from '@/utils/hooks'
 import { accountRule, codeRule, isAgreeRule, mobileRule, passwordRule } from '@/utils/validate';
 
-const { user } = useStore()
+const { user, cart } = useStore()
 const router = useRouter()
 const activeName = ref<'account' | 'mobile'>('account')
 
@@ -50,7 +50,9 @@ const login = async () => {
         if (res.errors.mobile || res.errors.code || res.errors.isAgree) return;
         await user.mobileLogin(mobile.value, code.value)
     }
+
     Message.success('登录成功')
+    cart.mergeLocalCart()
     router.push('/')
 }
 

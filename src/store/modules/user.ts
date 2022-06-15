@@ -3,6 +3,7 @@ import { Profile } from './../../types/data.d';
 import { defineStore } from 'pinia';
 import request from '@/utils/request';
 import { getProfile, removeProfile, setProfile } from '@/utils/localStorage';
+import useStore from '..';
 export default defineStore('user', {
     state() {
         return {
@@ -42,6 +43,8 @@ export default defineStore('user', {
         async logout() {
             this.profile = {} as Profile
             removeProfile()
+            const {cart} = useStore()
+            cart.clearCartList()
         },
         //  source: 1为pc，2为webapp，3为微信小程序, 4为Android, 5为ios, 6为qq, 7为微信
         async qqLogin(openId: string) {

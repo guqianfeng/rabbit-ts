@@ -1,5 +1,34 @@
 <script setup lang="ts" name="Cart">
-//
+import Confirm from '@/components/confirm';
+import Message from '@/components/message';
+import useStore from '@/store';
+
+const { cart } = useStore()
+
+const handleDeleteItem = async (skuIds: string[]) => {
+  await Confirm({
+    title: '温馨提示',
+    text: '亲，确认删除这个吗'
+  })
+  await cart.deleteCart(skuIds)
+  Message.success('删除成功')
+}
+
+const changeItemChecked = async (skuId: string, selected: boolean) => {
+  await cart.updateCart(skuId, {
+    selected
+  })
+}
+
+const changeItemNumber = async (skuId: string, count: number) => {
+  await cart.updateCart(skuId, {
+    count
+  })
+}
+
+const changeAllSelected = async (flag: boolean) => {
+  await cart.updateCartAllSelected(flag)
+}
 </script>
 
 <template>
@@ -13,7 +42,9 @@
         <table>
           <thead>
             <tr>
-              <th width="120"><XtxCheckbox>全选</XtxCheckbox></th>
+              <th width="120">
+                <XtxCheckbox :model-value="cart.isAllSelected" @change="changeAllSelected($event)">全选</XtxCheckbox>
+              </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
               <th width="180">数量</th>
@@ -23,35 +54,48 @@
           </thead>
           <!-- 有效商品 -->
           <tbody>
-            <tr v-for="i in 3" :key="i">
-              <td><XtxCheckbox /></td>
+            <tr v-for="item in cart.effectiveList" :key="item.skuId">
+              <td>
+                <XtxCheckbox :model-value="item.selected" @change="changeItemChecked(item.skuId, $event)"/>
+              </td>
               <td>
                 <div class="goods">
                   <RouterLink to="/">
-                    <img
-                      src="https://yanxuan-item.nosdn.127.net/13ab302f8f2c954d873f03be36f8fb03.png"
-                      alt=""
-                    />
+                    <img :src="item.picture" alt="" />
                   </RouterLink>
                   <div>
                     <p class="name ellipsis">
-                      和手足干裂说拜拜 ingrams手足皲裂修复霜
+                      {{ item.name }}
                     </p>
-                    <p class="attr">商品规格</p>
+                    <p class="attr">{{ item.attrsText }}</p>
                   </div>
                 </div>
               </td>
               <td class="tc">
-                <p>&yen;200.00</p>
+                <p>&yen;{{ item.nowPrice }}</p>
               </td>
               <td class="tc">
-                <XtxNumbox :model-value="1" />
+                <XtxNumbox :showLabel="false" :model-value="item.count" @update:model-value="changeItemNumber(item.skuId, $event)"/>
               </td>
-              <td class="tc"><p class="f16 red">&yen;200.00</p></td>
+              <td class="tc">
+                <p class="f16 red">&yen;{{ (+item.nowPrice * item.count).toFixed(2) }}</p>
+              </td>
               <td class="tc">
                 <p><a href="javascript:;">移入收藏夹</a></p>
-                <p><a class="green" href="javascript:;">删除</a></p>
+                <p><a class="green" href="javascript:;" @click="handleDeleteItem([item.skuId])">删除</a></p>
                 <p><a href="javascript:;">找相似</a></p>
+              </td>
+            </tr>
+            <!-- 删除光购物车之后使用元素占位 -->
+            <tr v-if="cart.effectiveList.length === 0">
+              <td colspan="6">
+                <div class="cart-none" style="text-align: center">
+                  <img src="@/assets/images/none.png" alt="" />
+                  <p>购物车内暂时没有商品</p>
+                  <div class="btn" style="margin: 20px">
+                    <XtxButton type="primary"> 继续逛逛 </XtxButton>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -61,8 +105,8 @@
       <div class="action">
         <div class="batch"></div>
         <div class="total">
-          共 7 件有效商品，已选择 2 件，商品合计：
-          <span class="red">¥400</span>
+          共 {{cart.effectiveListCount}} 件有效商品，已选择 {{cart.selectedCount}} 件，商品合计：
+          <span class="red">¥{{cart.selectPrice}}</span>
           <XtxButton type="primary">下单结算</XtxButton>
         </div>
       </div>
@@ -73,37 +117,46 @@
 <style scoped lang="less">
 .tc {
   text-align: center;
+
   .xtx-numbox {
     margin: 0 auto;
     width: 120px;
   }
 }
+
 .red {
   color: @priceColor;
 }
+
 .green {
   color: @xtxColor;
 }
+
 .f16 {
   font-size: 16px;
 }
+
 .goods {
   display: flex;
   align-items: center;
+
   img {
     width: 100px;
     height: 100px;
   }
-  > div {
+
+  >div {
     width: 280px;
     font-size: 16px;
     padding-left: 10px;
+
     .attr {
       font-size: 14px;
       color: #999;
     }
   }
 }
+
 .action {
   display: flex;
   background: #fff;
@@ -113,44 +166,53 @@
   font-size: 16px;
   justify-content: space-between;
   padding: 0 30px;
+
   .xtx-checkbox {
     color: #999;
   }
+
   .batch {
     a {
       margin-left: 20px;
     }
   }
+
   .red {
     font-size: 18px;
     margin-right: 20px;
     font-weight: bold;
   }
 }
+
 .tit {
   color: #666;
   font-size: 16px;
   font-weight: normal;
   line-height: 50px;
 }
+
 .xtx-cart-page {
   .cart {
     background: #fff;
     color: #666;
+
     table {
       border-spacing: 0;
       border-collapse: collapse;
       line-height: 24px;
+
       th,
       td {
         padding: 10px;
         border-bottom: 1px solid #f5f5f5;
+
         &:first-child {
           text-align: left;
           padding-left: 30px;
           color: #999;
         }
       }
+
       th {
         font-size: 16px;
         font-weight: normal;

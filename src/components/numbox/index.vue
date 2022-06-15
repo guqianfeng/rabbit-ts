@@ -3,11 +3,12 @@ import { ComponentInternalInstance, getCurrentInstance } from 'vue';
 
 //
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const {modelValue, max = 100, min = 1, step = 1} = defineProps<{
+const {modelValue, max = 100, min = 1, step = 1, showLabel = true} = defineProps<{
   modelValue: number,
   min?: number,
   max?: number,
   step?: number
+  showLabel?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -37,7 +38,7 @@ const handleChange = (e: Event) => {
 </script>
 <template>
   <div class="xtx-numbox">
-    <div class="label">数量</div>
+    <div class="label" v-if="showLabel">数量</div>
     <div class="numbox">
       <a href="javascript:;" @click="sub" :class="{not: min === modelValue}">-</a>
       <input type="text" :value="modelValue" @change="handleChange"/>
