@@ -1,4 +1,5 @@
 import Message from "@/components/message";
+import useStore from "@/store";
 import axios, { AxiosError } from "axios";
 
 /**
@@ -17,6 +18,11 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
+    const {user} = useStore()
+    const token = user.profile.token
+    if (token) {
+      config.headers!.Authorization = `Bearer ${token}`
+    }
     return config;
   },
   function (error) {

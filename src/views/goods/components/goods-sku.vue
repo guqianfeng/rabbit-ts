@@ -32,6 +32,8 @@ const changeSelected = (spec: Spec, specValue: SpecValue) => {
     const result = pathMap[key];
     // console.log(result[0])
     emit("changeSku", result[0]);
+  } else {
+    emit('changeSku', '')
   }
 };
 

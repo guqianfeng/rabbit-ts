@@ -9,8 +9,9 @@ import GoodsName from "./components/goods-name.vue";
 import GoodsSku from "./components/goods-sku.vue";
 import GoodsDetail from "./components/goods-detail.vue";
 import GoodsHot from "./components/goods-hot.vue";
+import Message from "@/components/message";
 
-const { goods } = useStore();
+const { goods, cart } = useStore();
 const route = useRoute();
 
 const { info } = storeToRefs(goods);
@@ -23,8 +24,11 @@ watchEffect(() => {
   }
 });
 
+let currentSkuId = ''
+
 const changeSku = (skuId: string) => {
   // console.log(skuId)
+  currentSkuId = skuId
   const res = info.value.skus.find((item) => item.id === skuId);
   if (!res) return;
   // console.log(res)
@@ -34,6 +38,19 @@ const changeSku = (skuId: string) => {
 };
 
 const count = ref(5)
+
+const addCart = async () => {
+  if (!currentSkuId) {
+    Message.warning('请选择好规格')
+    return;
+  }
+  // console.log('add cart')
+  await cart.addCart({
+    skuId: currentSkuId,
+    count: count.value
+  })
+  Message.success('购物车加入成功')
+}
 </script>
 <template>
   <div class="xtx-goods-page">
@@ -62,7 +79,7 @@ const count = ref(5)
             <GoodsSku :goods="info" @change-sku="changeSku" />
             <XtxNumbox v-model="count"/>
 
-            <XtxButton type="primary" style="margin-top: 20px;">加入购物车</XtxButton>
+            <XtxButton type="primary" style="margin-top: 20px;" @click="addCart">加入购物车</XtxButton>
           </div>
         </div>
         <!-- 商品详情 -->
