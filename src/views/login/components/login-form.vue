@@ -5,6 +5,7 @@ import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useForm, useField } from 'vee-validate'
 import { useCountdown } from '@/utils/hooks'
+import { accountRule, codeRule, isAgreeRule, mobileRule, passwordRule } from '@/utils/validate';
 
 const { user } = useStore()
 const router = useRouter()
@@ -23,30 +24,11 @@ const { validate, resetForm } = useForm({
         isAgree: true
     },
     validationSchema: {
-        account(value: string) {
-            if (!value) return '请输入用户名'
-            if (!/^\w{6,20}$/.test(value)) return '密码必须是6-20位字符'
-            return true
-        },
-        password(value: string) {
-            if (!value) return '请输入密码'
-            if (!/^\w{6,20}$/.test(value)) return '密码必须是6-20位字符'
-            return true;
-        },
-        isAgree(value: boolean) {
-            if (!value) return '请先同意'
-            return true;
-        },
-        mobile(value: string) {
-            if (!value) return '请输入手机号'
-            if (!/^1[3-9]\d{9}$/.test(value)) return '手机号格式有误'
-            return true;
-        },
-        code(value: string) {
-            if (!value) return '请输入验证码'
-            if (!/^\d{6}$/.test(value)) return '验证码格式有误'
-            return true;
-        }
+        account: accountRule,
+        password: passwordRule,
+        isAgree: isAgreeRule,
+        mobile: mobileRule,
+        code: codeRule,
     }
 })
 

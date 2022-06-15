@@ -30,7 +30,12 @@ instance.interceptors.response.use(
       Message.error('网络异常')
     } else {
       // console.log(error.response.data)
-      Message.error(error.response.data.message)
+      const {code, message} = error.response.data
+      if (code === '501' && message === "三方登录失败") {
+        Message.warning('您未和平台关联账号，请操作！', 3000)
+      } else {
+        Message.error(message)
+      }
     }
     return Promise.reject(error);
   }
