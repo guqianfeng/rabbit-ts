@@ -43,8 +43,8 @@ function formatTime (time: number) {
 }
 
 // https://www.baidu.com/
-const redirectUrl = encodeURIComponent('https://www.baidu.com/')
-// const redirectUrl = encodeURIComponent('http://www.corho.com:8080/#/pay/callback')
+// const redirectUrl = encodeURIComponent('https://www.baidu.com/')
+const redirectUrl = encodeURIComponent('http://www.corho.com:8080/#/pay/callback')
 const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirectUrl}`
 </script>
 <template>

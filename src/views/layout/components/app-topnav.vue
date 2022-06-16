@@ -29,7 +29,7 @@ const logoutFn = () => {
       <ul>
         <template v-if="user.profile.token">
           <li>
-            <RouterLink to="/" href="javascript:;"><i class="iconfont icon-user"></i>{{ user.profile.nickname ||
+            <RouterLink to="/member" href="javascript:;"><i class="iconfont icon-user"></i>{{ user.profile.nickname ||
                 user.profile.account
             }}</RouterLink>
           </li>
@@ -46,7 +46,7 @@ const logoutFn = () => {
           </li>
         </template>
         <li>
-          <RouterLink to="/" href="javascript:;">我的订单</RouterLink>
+          <RouterLink to="/" href="javascript:;" @click="$router.push('/member/order')">我的订单</RouterLink>
         </li>
         <li>
           <RouterLink to="/" href="javascript:;">会员中心</RouterLink>
