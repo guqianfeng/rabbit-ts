@@ -288,3 +288,12 @@ export interface OrderPayInfo {
   }[]
   arrivalEstimatedTime?: any
 }
+
+export interface OrderListInfo {
+  counts: number;
+  pageSize: number;
+  pages: number;
+  page: number;
+  // 应用订单列表别名
+  items: OrderPayInfo[];
+}
