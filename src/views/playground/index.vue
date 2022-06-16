@@ -5,6 +5,18 @@
     <XtxMessage type="error">失败啦</XtxMessage> -->
     <button @click="handleShow">show</button>
     <!-- <XtxConfirm title="confirm-title" text="confirm-text"/> -->
+    <XtxDialog title="我是大标题">
+      <ul>
+        <li>123</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+      </ul>
+      <template #footer>
+        <XtxButton type="gray" style="margin-right: 20px">否</XtxButton>
+        <XtxButton type="primary">是</XtxButton>
+      </template>
+    </XtxDialog>
   </div>
 </template>
 

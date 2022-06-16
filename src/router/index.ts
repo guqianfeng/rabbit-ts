@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 
 import Layout from "@/views/layout/index.vue";
 import Home from "@/views/home/index.vue";
+import useStore from "@/store";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -49,5 +50,23 @@ const router = createRouter({
     { path: "/login/callback", component: () => import("@/views/login/callback.vue") },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  const {cart} = useStore()
+  if (cart.isLogin) {
+    next()
+  } else {
+    if (to.path.includes('/member')) {
+      next({
+        path: '/login',
+        query: {
+          redirectUrl: to.fullPath
+        }
+      })
+    } else {
+      next()
+    }
+  }
+})
 
 export default router;

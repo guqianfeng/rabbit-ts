@@ -2,13 +2,14 @@
 import Message from '@/components/message';
 import useStore from '@/store';
 import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useForm, useField } from 'vee-validate'
 import { useCountdown } from '@/utils/hooks'
 import { accountRule, codeRule, isAgreeRule, mobileRule, passwordRule } from '@/utils/validate';
 
 const { user, cart } = useStore()
 const router = useRouter()
+const route = useRoute()
 const activeName = ref<'account' | 'mobile'>('account')
 
 const handleChange = (value: boolean) => {
@@ -53,7 +54,8 @@ const login = async () => {
 
     Message.success('登录成功')
     cart.mergeLocalCart()
-    router.push('/')
+    const redirectUrl = route.query.redirectUrl as string || '/'
+    router.push(redirectUrl)
 }
 
 watch(activeName, () => {
