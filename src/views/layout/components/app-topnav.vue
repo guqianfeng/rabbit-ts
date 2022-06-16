@@ -34,7 +34,7 @@ const logoutFn = () => {
             }}</RouterLink>
           </li>
           <li>
-            <RouterLink to="/" href="javascript:;" @click="logoutFn">退出登录</RouterLink>
+            <a href="javascript:;" @click="logoutFn">退出登录</a>
           </li>
         </template>
         <template v-else>

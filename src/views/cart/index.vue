@@ -2,6 +2,7 @@
 import Confirm from '@/components/confirm';
 import Message from '@/components/message';
 import useStore from '@/store';
+import { useRouter } from 'vue-router';
 
 const { cart } = useStore()
 
@@ -28,6 +29,15 @@ const changeItemNumber = async (skuId: string, count: number) => {
 
 const changeAllSelected = async (flag: boolean) => {
   await cart.updateCartAllSelected(flag)
+}
+
+const router = useRouter()
+const goCheckout = () => {
+  if (cart.selectedCount === 0) {
+    Message.warning('请至少选择一件商品！')
+    return;
+  }
+  router.push('/member/checkout')
 }
 </script>
 
@@ -93,7 +103,7 @@ const changeAllSelected = async (flag: boolean) => {
                   <img src="@/assets/images/none.png" alt="" />
                   <p>购物车内暂时没有商品</p>
                   <div class="btn" style="margin: 20px">
-                    <XtxButton type="primary"> 继续逛逛 </XtxButton>
+                    <XtxButton type="primary" @click="$router.push('/')"> 继续逛逛 </XtxButton>
                   </div>
                 </div>
               </td>
@@ -107,7 +117,7 @@ const changeAllSelected = async (flag: boolean) => {
         <div class="total">
           共 {{cart.effectiveListCount}} 件有效商品，已选择 {{cart.selectedCount}} 件，商品合计：
           <span class="red">¥{{cart.selectPrice}}</span>
-          <XtxButton type="primary">下单结算</XtxButton>
+          <XtxButton type="primary" @click="goCheckout">下单结算</XtxButton>
         </div>
       </div>
     </div>
