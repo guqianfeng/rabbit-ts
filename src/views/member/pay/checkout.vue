@@ -29,7 +29,8 @@ const submitCheckout = async () => {
   cart.getCartList()
   // 跳转到支付页面
 
-  router.replace('/member/pay?id=' + res.data.result.id)
+  router.push('/member/pay')
+  // router.replace('/member/pay?id=' + res.data.result.id)
 }
 </script>
 
