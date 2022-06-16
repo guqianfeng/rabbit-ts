@@ -8,9 +8,11 @@ import axios, { AxiosError } from "axios";
  * https://apipc-xiaotuxian-front.itheima.net/login/social/unbind?mobile=手机号
  */
 
+export const baseURL = "http://pcapi-xiaotuxian-front.itheima.net/"
+
 // 备用接口地址: http://pcapi-xiaotuxian-front-devtest.itheima.net/
 const instance = axios.create({
-  baseURL: "http://pcapi-xiaotuxian-front.itheima.net/",
+  baseURL,
   timeout: 5000,
 });
 

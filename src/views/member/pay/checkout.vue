@@ -29,8 +29,9 @@ const submitCheckout = async () => {
   cart.getCartList()
   // 跳转到支付页面
 
-  router.push('/member/pay')
-  // router.replace('/member/pay?id=' + res.data.result.id)
+  // 不能使用push
+  // router.push('/member/pay')
+  router.replace('/member/pay?id=' + res.data.result.id)
 }
 </script>
 
