@@ -1,19 +1,20 @@
 <script setup lang="tsx" name="XtxTabs">
-import { provide, toRefs, useSlots } from 'vue';
+import { provide, toRefs, useSlots, VNode } from 'vue';
 
 const props = defineProps<{
   modelValue: string
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', newValue: string): void
+  (e: 'update:modelValue', newValue: string): void,
+  (e: 'tab-click', obj: {tab: VNode, index: number}): void
 }>()
 
 const {modelValue} = toRefs(props)
 provide('activeNameValue', modelValue)
 
 const slots = useSlots()
-const VNode = () => {
+const VNodeBox = () => {
   // console.log(props.modelValue)
   const defaultArr = slots.default?.()
   // console.log(panes)
@@ -41,6 +42,7 @@ const VNode = () => {
             key={index}
             onClick={() => {
               emit('update:modelValue', item.props?.name)
+              emit('tab-click', {tab: item, index: index})
             }}
           >{item.props?.label}</a>
         )
@@ -57,7 +59,7 @@ const VNode = () => {
 </script>
 
 <template>
-  <VNode />
+  <VNodeBox />
 </template>
 
 <style lang="less">

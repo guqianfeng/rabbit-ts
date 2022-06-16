@@ -1,6 +1,6 @@
 <template>
   <div>
-    <XtxTabs v-model="activeName">
+    <XtxTabs v-model="activeName" @tab-click="handleTabClick">
       <XtxTabsPane label="全部订单" name="all">全部订单</XtxTabsPane>
       <XtxTabsPane 
         v-for="item in orderStatus" 
@@ -26,6 +26,9 @@ const orderStatus = [
   { name: 'cancel', label: '已取消' }
 ]
 
+const handleTabClick = (obj: any) => {
+  console.log(obj)
+}
 </script>
 
 <style scoped>
