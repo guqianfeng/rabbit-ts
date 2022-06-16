@@ -11,6 +11,8 @@ import XtxCheckbox from "@/components/checkbox/index.vue"
 import XtxMessage from "@/components/message/index.vue"
 import XtxDialog from "@/components/dialog/index.vue"
 import XtxSwitch from "@/components/switch/index.vue"
+import XtxTabs from "@/components/tabs/index.vue"
+import XtxTabsPane from "@/components/tabs/pane.vue"
 import defaultImg from "@/assets/images/200.png";
 import { useIntersectionObserver } from "@vueuse/core";
 
@@ -28,6 +30,8 @@ export default {
     app.component(XtxMessage.name, XtxMessage);
     app.component(XtxDialog.name, XtxDialog);
     app.component(XtxSwitch.name, XtxSwitch);
+    app.component(XtxTabs.name, XtxTabs);
+    app.component(XtxTabsPane.name, XtxTabsPane);
 
     app.directive("lazy", (el, { value }) => {
       const { stop } = useIntersectionObserver(el, ([{ isIntersecting }]) => {

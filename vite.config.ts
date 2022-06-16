@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueSetupExtend from "vite-plugin-vue-setup-extend";
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const path = require("path");
 
@@ -11,6 +12,7 @@ export default defineConfig({
       reactivityTransform: true,
     }),
     vueSetupExtend(),
+    vueJsx(),
   ],
   resolve: {
     alias: {
