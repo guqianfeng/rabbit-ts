@@ -1,15 +1,43 @@
 <script lang="ts" setup name="XtxDialog">
 // 
+import {onClickOutside} from '@vueuse/core'
+import { ref, watch } from 'vue';
 const props = defineProps<{
-  title: string
+  title: string,
+  visible: boolean
 }>()
+
+const emit = defineEmits<{
+  (e: 'update:visible', flag: boolean): void;
+}>()
+
+const close = () => {
+  // console.log('close')
+  emit('update:visible', false)
+}
+
+const target = ref(null)
+
+onClickOutside(target, () => {
+  // console.log('click outside')
+  close()
+})
+
+const show = ref(false)
+watch(() => props.visible, (value) => {
+  setTimeout(() => {
+    show.value = value
+  }, 0)
+}, {
+  immediate: true
+})
 </script>
 <template>
-  <div class="xtx-dialog">
-    <div class="wrapper">
+  <div class="xtx-dialog" v-if="visible" :class="{fade: show}">
+    <div class="wrapper" ref="target" :class="{fade: show}">
       <div class="header">
         <h3>{{title}}</h3>
-        <a href="JavaScript:;" class="iconfont icon-close-new"></a>
+        <a href="JavaScript:;" class="iconfont icon-close-new" @click="close"></a>
       </div>
       <div class="body">
         <slot></slot>
@@ -29,12 +57,11 @@ const props = defineProps<{
   width: 100%;
   height: 100%;
   z-index: 8887;
-  background: rgba(0, 0, 0, 0.5);
-  // background: rgba(0, 0, 0, 0);
-  // &.fade {
-  //   transition: all 0.4s;
-  //   background: rgba(0, 0, 0, 0.5);
-  // }
+  background: rgba(0, 0, 0, 0);
+  &.fade {
+    transition: all 0.4s;
+    background: rgba(0, 0, 0, 0.5);
+  }
   .wrapper {
     width: 600px;
     background: #fff;
@@ -42,14 +69,13 @@ const props = defineProps<{
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    // transform: translate(-50%, -60%);
-    // opacity: 0;
-    // &.fade {
-    //   transition: all 0.4s;
-    //   transform: translate(-50%, -50%);
-    //   opacity: 1;
-    // }
+    transform: translate(-50%, -80%);
+    opacity: 0;
+    &.fade {
+      transition: all 0.4s;
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
     .body {
       padding: 20px 40px;
       font-size: 16px;
